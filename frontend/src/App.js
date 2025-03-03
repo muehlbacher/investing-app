@@ -1,14 +1,8 @@
 import React from "react";
-import TodoApp from "./components/TodoApp";
-import { Container } from "reactstrap";
+import Dashboard from "./components/Dashboard";
 
 function App() {
-  return (
-    <Container>
-      <h1 className="text-center mt-4">My Todo App</h1>
-      <TodoApp />
-    </Container>
-  );
+  return <Dashboard />;
 }
 
 export default App;

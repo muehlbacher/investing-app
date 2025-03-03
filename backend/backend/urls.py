@@ -21,9 +21,14 @@ from rest_framework import routers
 from invest import views
 
 router = routers.DefaultRouter()
-router.register(r"todos", views.TodoView, "todo")
+# router.register(r"todos", views.TodoView, "todo")
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("api/", include(router.urls)),
+    path(
+        "financial-data/<str:ticker>/",
+        views.FinancialDataAPIView.as_view(),
+        name="financial_data",
+    ),
 ]
