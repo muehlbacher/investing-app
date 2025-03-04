@@ -20,6 +20,7 @@ from django.urls import path, include
 from rest_framework import routers
 from invest import views
 
+
 router = routers.DefaultRouter()
 # router.register(r"todos", views.TodoView, "todo")
 
@@ -31,4 +32,10 @@ urlpatterns = [
         views.FinancialDataAPIView.as_view(),
         name="financial_data",
     ),
+    path(
+        "wb-data/<str:ticker>/",
+        views.WbDataAPIView.as_view(),
+        name="wb_data",
+    ),
+    path("search-ticker/", views.search_companies, name="search_ticker"),
 ]

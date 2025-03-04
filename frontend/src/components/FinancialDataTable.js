@@ -2,8 +2,9 @@ import React, { useState, useEffect } from "react";
 import { Table, Card, CardBody } from "reactstrap";
 import axios from "axios";
 
-const FinancialDataTable = ({ ticker, uniqueYears = [] }) => {
+const FinancialDataTable = ({ ticker = [] }) => {
   const [financialTableData, setFinancialTableData] = useState({});
+  const [uniqueYears, setUniqueYears] = useState([])
   const [showOperatingExpenses, setShowOperatingExpenses] = useState(false);
 
   useEffect(() => {
@@ -14,6 +15,7 @@ const FinancialDataTable = ({ ticker, uniqueYears = [] }) => {
         const financialTableData = response.data['metricData'];
         const uniqueYears = response.data['uniqueYears'];
         setFinancialTableData(financialTableData);
+        setUniqueYears(uniqueYears);
       } catch (error) {
         console.error("Error fetching financial data:", error);
       }
