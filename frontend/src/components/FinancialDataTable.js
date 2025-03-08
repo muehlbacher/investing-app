@@ -2,6 +2,18 @@ import React, { useState, useEffect } from "react";
 import { Table, Card, CardBody } from "reactstrap";
 import axios from "axios";
 
+const formatNumber = (number) => {
+  if (number >= 1000000000) {
+    return (number / 1000000000).toFixed(1) + 'B';  // Billions
+  } else if (number >= 1000000) {
+    return (number / 1000000).toFixed(1) + 'M';  // Millions
+  } else if (number >= 1000) {
+    return (number / 1000).toFixed(1) + 'K';  // Thousands
+  } else {
+    return number;  // Less than thousand, no change
+  }
+};
+
 const FinancialDataTable = ({ ticker = [] }) => {
   const [financialTableData, setFinancialTableData] = useState({});
   const [uniqueYears, setUniqueYears] = useState([])
@@ -55,7 +67,7 @@ const FinancialDataTable = ({ ticker = [] }) => {
                   </td>
                   {uniqueYears.map((year) => (
                     <td key={year} className="text-end">
-                      {financialTableData[key]?.[year]?.value || "-"}
+                      {formatNumber(financialTableData[key]?.[year]?.value || "-")}
                     </td>
                   ))}
                 </tr>
@@ -72,7 +84,7 @@ const FinancialDataTable = ({ ticker = [] }) => {
                 </td>
                 {uniqueYears.map((year) => (
                   <td key={year} className="text-end">
-                    {financialTableData.operatingExpenses?.[year]?.value || "-"}
+                    {formatNumber(financialTableData.operatingExpenses?.[year]?.value || "-")}
                   </td>
                 ))}
               </tr>
@@ -87,7 +99,7 @@ const FinancialDataTable = ({ ticker = [] }) => {
                     <td className="ps-5">{label}</td>
                     {uniqueYears.map((year) => (
                       <td key={year} className="text-end">
-                        {financialTableData[key]?.[year]?.value || "-"}
+                      {formatNumber(financialTableData[key]?.[year]?.value || "-")}
                       </td>
                     ))}
                   </tr>
@@ -106,8 +118,8 @@ const FinancialDataTable = ({ ticker = [] }) => {
                   </td>
                   {uniqueYears.map((year) => (
                     <td key={year} className="text-end">
-                      {financialTableData[key]?.[year]?.value || "-"}
-                    </td>
+                      {formatNumber(financialTableData[key]?.[year]?.value || "-")}
+                      </td>
                   ))}
                 </tr>
               ))}

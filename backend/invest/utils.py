@@ -47,7 +47,7 @@ def prepare_table_data_selected_metrics(ticker, metrics=None):
         metric_data = {
             metric: {
                 str(row["TimePeriodID__Year"]): {
-                    "value": f"{row['Value']:,.0f}",
+                    "value": row["Value"],
                     "class": f"valuation-{row['Valuation']}",
                     "tooltip": "This is the tooltip message from the financial service!",
                 }
