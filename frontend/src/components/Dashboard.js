@@ -11,6 +11,7 @@ const Dashboard = () => {
   const [searchTicker, setSearchTicker] = useState("AAPL");   // Default ticker
   const [query, setQuery] = useState("");                     // Input field query
   const [suggestions, setSuggestions] = useState([]);         // Search results
+  //const [financialData, setFinancialData]
 
   // Fetch ticker suggestions from Django backend
   useEffect(() => {
