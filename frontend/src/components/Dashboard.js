@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { 
   Container, Row, Col, Nav, NavItem, NavLink, Input, 
-  Navbar, NavbarBrand, NavbarToggler, Collapse, Nav as BsNav, ListGroup, ListGroupItem 
+  Navbar, NavbarBrand, NavbarToggler, Collapse, Nav as BsNav, ListGroup, ListGroupItem,
+  TabContent, TabPane
 } from "reactstrap";
 import axios from "axios";
 import FinancialDataTable from "./FinancialDataTable";
@@ -11,7 +12,12 @@ const Dashboard = () => {
   const [searchTicker, setSearchTicker] = useState("AAPL");   // Default ticker
   const [query, setQuery] = useState("");                     // Input field query
   const [suggestions, setSuggestions] = useState([]);         // Search results
-  //const [financialData, setFinancialData]
+  const [activeTab, setActiveTab] = useState('1');            // Track active tab
+
+  // Toggle tab function
+  const toggleTab = (tab) => {
+    if (activeTab !== tab) setActiveTab(tab);
+  };
 
   // Fetch ticker suggestions from Django backend
   useEffect(() => {
@@ -90,18 +96,44 @@ const Dashboard = () => {
 
         {/* Content Section */}
         <Container className="mt-3">
-          <div>{searchTicker}</div>
-          <Row>
-            <Col md={8}>
-              <FinancialDataTable ticker={searchTicker} />
-            </Col>
-            <Col md={4}>
-              <div className="p-3 border bg-light">Chart Placeholder</div>
-            </Col>
-          </Row>
-          <Col md={8}>
-              <WarrenBuffetIndicators ticker={searchTicker} />
-          </Col>
+          <div>
+            <h3 className="mb-3">{searchTicker}</h3>
+            <Row className="mb-4">
+              <Col md={12}>
+                {/* Tab Navigation */}
+                <Nav tabs>
+                  <NavItem>
+                    <NavLink
+                      className={activeTab === '1' ? 'active' : ''}
+                      onClick={() => toggleTab('1')}
+                      style={{ cursor: 'pointer' }}
+                    >
+                      Income Statement
+                    </NavLink>
+                  </NavItem>
+                  <NavItem>
+                    <NavLink
+                      className={activeTab === '2' ? 'active' : ''}
+                      onClick={() => toggleTab('2')}
+                      style={{ cursor: 'pointer' }}
+                    >
+                      Warren Buffett Indicators
+                    </NavLink>
+                  </NavItem>
+                </Nav>
+                
+                {/* Tab Content */}
+                <TabContent activeTab={activeTab}>
+                  <TabPane tabId="1">
+                    <FinancialDataTable ticker={searchTicker} />
+                  </TabPane>
+                  <TabPane tabId="2">
+                    <WarrenBuffetIndicators ticker={searchTicker} />
+                  </TabPane>
+                </TabContent>
+              </Col>
+            </Row>
+          </div>
         </Container>
       </div>
     </div>
