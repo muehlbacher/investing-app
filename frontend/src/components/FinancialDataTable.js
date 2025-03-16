@@ -96,8 +96,9 @@ const FinancialDataTable = ({ ticker }) => {
                           <td>
                             <button 
                               className="no-underline-btn d-flex align-items-center" 
-                              onClick={() => setShowOperatingExpenses(!showOperatingExpenses)}
-                              onMouseEnter={() => handleMetricHover("operatingExpenses")}
+                              onClick={() => {setShowOperatingExpenses(!showOperatingExpenses);
+                                handleMetricHover("operatingExpenses");
+                              }}
                               style={{ cursor: 'pointer' }}
                             >
                               <span className={`me-2 ${showOperatingExpenses ? "rotate" : ""}`}>&#9654;</span>
@@ -117,7 +118,7 @@ const FinancialDataTable = ({ ticker }) => {
                           <tr key={expenseItem.key}>
                             <td 
                               className="ps-5"
-                              onMouseEnter={() => handleMetricHover(expenseItem.key)}
+                              onClick={() => handleMetricHover(expenseItem.key)}
                               style={{ cursor: 'pointer' }}
                             >
                               {expenseItem.label}
@@ -133,7 +134,7 @@ const FinancialDataTable = ({ ticker }) => {
                         {/* Current regular metric */}
                         <tr key={metric.key} className={metric.bold ? "fw-bold" : ""}>
                           <td 
-                            onMouseEnter={() => handleMetricHover(metric.key)}
+                            onClick={() => handleMetricHover(metric.key)}
                             style={{ cursor: 'pointer' }}
                           >
                             {metric.label}
@@ -150,7 +151,7 @@ const FinancialDataTable = ({ ticker }) => {
                       // Regular metric rows
                       <tr key={metric.key} className={metric.bold ? "fw-bold" : ""}>
                         <td 
-                          onMouseEnter={() => handleMetricHover(metric.key)}
+                          onClick={() => handleMetricHover(metric.key)}
                           style={{ cursor: 'pointer' }}
                         >
                           {metric.label}
