@@ -66,7 +66,6 @@ const FinancialChart = ({ data, years, metricName, tooltip }) => {
         )}
         <div>
           <p>{ tooltip }</p>
-          <p>Description of this indicator</p>
       </div>
       </CardBody>
     </Card>

@@ -8,6 +8,9 @@ body {
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+  font-family: "Roboto Condensed", source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+* {
+  font-family: "Roboto Condensed" , sans-serif;
 }

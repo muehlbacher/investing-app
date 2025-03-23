@@ -117,23 +117,7 @@ const WarrenBuffetIndicators = ({ticker, tooltips}) => {
              />
             
         </Col>
-      </Row><Row>
-          <Col md={8}>
-            <Card className="mb-4">
-              <CardBody>
-                <div>
-                  <p> Net Earnings Ratio: A net Earnings Ratio over 20% is a strong indicator, 
-                    that theres is some kind of competivive advantage </p>
-                  <p>
-
-                    </p> 
-                </div> 
-              </CardBody>
-            </Card>
-          </Col>
-          <Col md={4}>
-          </Col>
-        </Row></>
+      </Row></>
     );
 };
 
