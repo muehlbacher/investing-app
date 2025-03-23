@@ -13,32 +13,48 @@ const Dashboard = () => {
   const [query, setQuery] = useState("");                     // Input field query
   const [suggestions, setSuggestions] = useState([]);         // Search results
   const [activeTab, setActiveTab] = useState('1');            // Track active tab
+  const [tooltips, setTooltips] = useState({})
 
   // Toggle tab function
   const toggleTab = (tab) => {
     if (activeTab !== tab) setActiveTab(tab);
   };
 
-  // Fetch ticker suggestions from Django backend
-  useEffect(() => {
-    const fetchSuggestions = async () => {
-      if (query.length < 1) {
-        setSuggestions([]);
-        return;
-      }
+// 1st useEffect: Fetch tooltips (Runs once on mount)
+useEffect(() => {
+  const fetchTooltips = async () => {
+    try {
+      const response = await axios.get("http://localhost:8000/tooltips/");
+      console.log("Fetched tooltips:", response.data);
+      setTooltips(response.data.tooltips);
+    } catch (error) {
+      console.error("Error fetching tooltips:", error);
+    }
+  };
 
-      try {
-        const response = await axios.get(`http://localhost:8000/search-ticker/?q=${query}`);
-        setSuggestions(response.data.results || []);
-      } catch (error) {
-        console.error("Error fetching ticker suggestions:", error);
-      }
-    };
+  fetchTooltips();
+}, []); // Empty dependency array → Runs only once
 
-    const delayDebounce = setTimeout(fetchSuggestions, 300); // Debounce API calls
+//  2nd useEffect: Fetch ticker suggestions (Runs when `query` changes)
+useEffect(() => {
+  if (query.length < 1) {
+    setSuggestions([]);
+    return;
+  }
 
-    return () => clearTimeout(delayDebounce);
-  }, [query]);  // Runs whenever `query` changes
+  const fetchSuggestions = async () => {
+    try {
+      const response = await axios.get(`http://localhost:8000/search-ticker/?q=${query}`);
+      setSuggestions(response.data.results || []);
+    } catch (error) {
+      console.error("Error fetching ticker suggestions:", error);
+    }
+  };
+
+  const delayDebounce = setTimeout(fetchSuggestions, 300); // Debounce API calls
+
+  return () => clearTimeout(delayDebounce); // Cleanup function
+}, [query]); // Runs whenever `query` changes
 
   // Handle ticker selection
   const handleSelectTicker = (ticker) => {
@@ -125,10 +141,10 @@ const Dashboard = () => {
                 {/* Tab Content */}
                 <TabContent activeTab={activeTab}>
                   <TabPane tabId="1">
-                    <FinancialDataTable ticker={searchTicker} />
+                    <FinancialDataTable ticker={searchTicker} tooltips={tooltips}  />
                   </TabPane>
                   <TabPane tabId="2">
-                    <WarrenBuffetIndicators ticker={searchTicker} />
+                    <WarrenBuffetIndicators ticker={searchTicker} tooltips={tooltips} />
                   </TabPane>
                 </TabContent>
               </Col>

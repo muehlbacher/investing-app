@@ -38,7 +38,5 @@ urlpatterns = [
         name="wb_data",
     ),
     path("search-ticker/", views.search_companies, name="search_ticker"),
-    path(
-        "tooltip/<str:metric>/", views.TooltipAPIView.as_view(), name="metric_tooltip"
-    ),
+    path("tooltips/", views.TooltipAPIView.as_view(), name="metric_tooltip"),
 ]

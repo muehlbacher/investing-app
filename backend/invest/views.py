@@ -77,19 +77,18 @@ class WbDataAPIView(APIView):
 
 
 class TooltipAPIView(APIView):
-    def get(self, request, metric):
-        metric = request.query_params.get("metric")
+    def get(self, request):
         try:
-            tooltip = fetch_metric_tooltip(metric)
+            tooltip = fetch_metric_tooltip()
         except MetricDoesNotExistError as e:
-            return Response({"tooltip": "No tooltip"})
+            tooltip = {}
 
         if tooltip is None:
-            tooltip = "empty tooltip"
+            tooltip = {}
         if tooltip == []:
-            tooltip = "tooltip is empty"
+            tooltip = {}
 
-        return Response({"tooltip": tooltip})
+        return Response({"tooltips": tooltip})
 
 
 def search_companies(request):

@@ -3,10 +3,11 @@ import { Table, Card, CardBody, Row, Col } from "reactstrap";
 import axios from "axios";
 import FinancialChart from "./FinancialChart";
 
-const WarrenBuffetIndicators = ({ticker}) => {
+const WarrenBuffetIndicators = ({ticker, tooltips}) => {
     const [wbTableData, setWbTableData] = useState({});
     const [uniqueYears, setUniqueYears] = useState([]);
     const [activeMetric, setActiveMetric] = useState("");
+    const [activeTooltip, setActiveTooltip] = useState("")
   
     useEffect(() => {
       const fetchData = async () => {
@@ -20,7 +21,9 @@ const WarrenBuffetIndicators = ({ticker}) => {
           
           // Set first metric as default when data loads
           if (wbTableData && Object.keys(wbTableData).length > 0) {
-            setActiveMetric(Object.keys(wbTableData)[0]);
+            const metric_name = Object.keys(wbTableData)[0];
+            setActiveMetric(metric_name);
+            setActiveTooltip(tooltips[metric_name]);
           }
         } catch (error) {
           console.error("Error fetching financial data:", error);
@@ -33,6 +36,7 @@ const WarrenBuffetIndicators = ({ticker}) => {
     // Handle metric hover
     const handleMetricHover = (metric) => {
       setActiveMetric(metric);
+      setActiveTooltip(tooltips[metric])
     };
 
     if (!uniqueYears || uniqueYears.length === 0 || !wbTableData) {
@@ -79,7 +83,7 @@ const WarrenBuffetIndicators = ({ticker}) => {
                       <tr key={metric}>
                         <td
                           className="table-metric"
-                          onMouseEnter={() => handleMetricHover(metric)}
+                          onClick ={() => handleMetricHover(metric)}
                           style={{ cursor: 'pointer' }}
                         >
                           {metric}
@@ -108,7 +112,10 @@ const WarrenBuffetIndicators = ({ticker}) => {
           <FinancialChart
             data={getChartData()}
             years={uniqueYears}
-            metricName={activeMetric} />
+            metricName={activeMetric}
+            tooltip={activeTooltip}
+             />
+            
         </Col>
       </Row><Row>
           <Col md={8}>

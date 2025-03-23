@@ -15,12 +15,12 @@ const formatNumber = (number) => {
   }
 };
 
-const FinancialDataTable = ({ ticker }) => {
+const FinancialDataTable = ({ ticker, tooltips }) => {
   const [financialTableData, setFinancialTableData] = useState({});
   const [uniqueYears, setUniqueYears] = useState([]);
   const [showOperatingExpenses, setShowOperatingExpenses] = useState(false);
   const [activeMetric, setActiveMetric] = useState("revenue");
-  const [activeTooltip, setActiveTooltip] = useState("revenue");
+  const [activeTooltip, setActiveTooltip] = useState(tooltips['revenue'])
 
   useEffect(() => {
     const fetchData = async () => {
@@ -34,9 +34,7 @@ const FinancialDataTable = ({ ticker }) => {
         
         // Set default metric to revenue when data loads
         setActiveMetric("revenue");
-        const rep_tool = await axios.get(`http://localhost:8000/tooltip/revenue/`);
-        const tooltip = rep_tool.data['tooltip']
-        setActiveTooltip(tooltip);
+        setActiveTooltip(tooltips['revenue'])
       } catch (error) {
         console.error("Error fetching financial data:", error);
       }
@@ -52,10 +50,7 @@ const FinancialDataTable = ({ ticker }) => {
   // Handle metric hover
   const handleMetricHover = async (metric) => {
     setActiveMetric(metric);
-    const rep_tool = await axios.get(`http://localhost:8000/tooltip/${metric}/`);
-    console.log(rep_tool)
-    const tooltip = rep_tool.data['tooltip']
-    setActiveTooltip(tooltip);
+    setActiveTooltip(tooltips[metric]);
   };
 
   
