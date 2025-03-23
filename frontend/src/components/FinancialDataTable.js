@@ -20,6 +20,7 @@ const FinancialDataTable = ({ ticker }) => {
   const [uniqueYears, setUniqueYears] = useState([]);
   const [showOperatingExpenses, setShowOperatingExpenses] = useState(false);
   const [activeMetric, setActiveMetric] = useState("revenue");
+  const [activeTooltip, setActiveTooltip] = useState("revenue");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -33,6 +34,9 @@ const FinancialDataTable = ({ ticker }) => {
         
         // Set default metric to revenue when data loads
         setActiveMetric("revenue");
+        const rep_tool = await axios.get(`http://localhost:8000/tooltip/revenue/`);
+        const tooltip = rep_tool.data['tooltip']
+        setActiveTooltip(tooltip);
       } catch (error) {
         console.error("Error fetching financial data:", error);
       }
@@ -46,9 +50,14 @@ const FinancialDataTable = ({ ticker }) => {
   }
 
   // Handle metric hover
-  const handleMetricHover = (metric) => {
+  const handleMetricHover = async (metric) => {
     setActiveMetric(metric);
+    const rep_tool = await axios.get(`http://localhost:8000/tooltip/${metric}/`);
+    console.log(rep_tool)
+    const tooltip = rep_tool.data['tooltip']
+    setActiveTooltip(tooltip);
   };
+
   
   // Financial metrics in order
   const financialMetrics = [
@@ -59,6 +68,8 @@ const FinancialDataTable = ({ ticker }) => {
     { label: "Interest Expense", key: "interestExpense" },
     { label: "Depreciation", key: "depreciationAndAmortization" },
     { label: "Income Before Tax", key: "incomeBeforeTax", bold: true },
+    { label: "Income Taxes Paid", key: "incomeTaxExpense", bold: true},
+    { label: "Net Earnings ", key: "netIncome", bold: true },
   ];
   
   // Operating expense items
@@ -176,6 +187,7 @@ const FinancialDataTable = ({ ticker }) => {
           data={financialTableData[activeMetric] || {}} 
           years={uniqueYears}
           metricName={activeMetric}
+          tooltip={activeTooltip}
         />
       </Col>
     </Row>

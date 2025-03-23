@@ -2,7 +2,7 @@ import React from "react";
 import { Card, CardBody, CardTitle } from "reactstrap";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
 
-const FinancialChart = ({ data, years, metricName }) => {
+const FinancialChart = ({ data, years, metricName, tooltip }) => {
   // Convert data format for the chart
   const prepareChartData = () => {
     if (!data || !years || years.length === 0) {
@@ -44,7 +44,7 @@ const FinancialChart = ({ data, years, metricName }) => {
           <ResponsiveContainer width="100%" height={300}>
             <LineChart data={chartData} margin={{ top: 5, right: 20, bottom: 5, left: 20 }}>
               <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="year" />
+              <XAxis dataKey="year" reversed={true}/>
               <YAxis tickFormatter={formatYAxis} />
               <Tooltip 
                 formatter={(value) => [`$${new Intl.NumberFormat().format(value)}`, formatMetricName(metricName)]}
@@ -64,6 +64,10 @@ const FinancialChart = ({ data, years, metricName }) => {
         ) : (
           <div className="text-center p-5">No data available for this metric</div>
         )}
+        <div>
+          <p>{tooltip}</p>
+          <p>Description of this indicator</p>
+      </div>
       </CardBody>
     </Card>
   );

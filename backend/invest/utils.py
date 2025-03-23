@@ -4,7 +4,8 @@ import pandas as pd
 from .models.financialdata_model import FinancialData
 from .models.company_model import Company
 from .models.financialdata_model import FinancialData
-from .errors import CompanyDoesNotExistError
+from .models.metrictooltip_model import MetricTooltip
+from .errors import CompanyDoesNotExistError, MetricDoesNotExistError
 
 
 def prepare_table_data_selected_metrics(ticker, metrics=None):
@@ -21,6 +22,9 @@ def prepare_table_data_selected_metrics(ticker, metrics=None):
             "interestExpense",
             "otherExpenses",
             "incomeBeforeTax",
+            "incomeBeforeTaxRatio",
+            "incomeTaxExpense",
+            "netIncome",
         ]
 
     try:
@@ -119,3 +123,24 @@ def prepare_wb_table_data(ticker):
         return f"Company with ticker '{ticker}' does not exist.", []
     except Exception as e:
         return f"An error occurred: {str(e)}", []
+
+
+def fetch_metric_tooltip(metrics=None) -> dict:
+    """
+    fetches tooltips from database
+    if metrics is none fetches all tooltips
+
+    """
+    # Query to get all tooltips along with the corresponding MetricName
+    tooltips = MetricTooltip.objects.select_related("Metric").all()
+
+    # Initialize an empty dictionary to store the results
+    tooltip_dict = {}
+
+    # Loop through and add the results to the dictionary
+    for tooltip in tooltips:
+        tooltip_dict[tooltip.Metric.MetricName] = tooltip.Tooltip
+    print("TOOLTIP")
+    print(tooltip_dict)
+
+    return tooltip_dict

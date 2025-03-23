@@ -6,8 +6,9 @@ from rest_framework import status
 from .utils import (
     prepare_table_data_selected_metrics,
     prepare_wb_table_data,
+    fetch_metric_tooltip,
 )  # Assuming you place the function in utils.py
-from .errors import CompanyDoesNotExistError
+from .errors import CompanyDoesNotExistError, MetricDoesNotExistError
 from django.http import JsonResponse
 from django.db.models import Q
 from .models.company_model import Company  # Ensure this model exists
@@ -73,6 +74,22 @@ class WbDataAPIView(APIView):
                 {"message": f"An error occurred: {str(e)}"},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR,
             )
+
+
+class TooltipAPIView(APIView):
+    def get(self, request, metric):
+        metric = request.query_params.get("metric")
+        try:
+            tooltip = fetch_metric_tooltip(metric)
+        except MetricDoesNotExistError as e:
+            return Response({"tooltip": "No tooltip"})
+
+        if tooltip is None:
+            tooltip = "empty tooltip"
+        if tooltip == []:
+            tooltip = "tooltip is empty"
+
+        return Response({"tooltip": tooltip})
 
 
 def search_companies(request):

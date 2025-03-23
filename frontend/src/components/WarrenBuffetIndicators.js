@@ -54,12 +54,16 @@ const WarrenBuffetIndicators = ({ticker}) => {
     };
 
     return (
-      <Row>
+      <><Row>
         <Col md={8}>
           <Card className="mb-4">
             <CardBody>
               <h5 className="card-title">Warren Buffett's Indicators</h5>
-              <p className="card-text text-muted mb-3">Hover over any indicator to see its trend chart</p>
+              <p className="card-text text-muted mb-3">Part of Warren Buffets insight was to divide the world of business 
+                into two different groups: <br></br>
+                  - business with long-term competivive adavantage over there competitors. You want to buy them at a fair price. <br></br>
+                  - mediocre businesses that struggle year after year in a competitive market, which makes them poor long term investments. 
+              </p>
               <div className="table-responsive">
                 <Table striped bordered hover responsive>
                   <thead className="thead-dark">
@@ -73,15 +77,15 @@ const WarrenBuffetIndicators = ({ticker}) => {
                   <tbody>
                     {Object.entries(wbTableData).map(([metric, data]) => (
                       <tr key={metric}>
-                        <td 
+                        <td
                           className="table-metric"
                           onMouseEnter={() => handleMetricHover(metric)}
                           style={{ cursor: 'pointer' }}
                         >
                           {metric}
-                          <span 
-                            data-bs-toggle="tooltip" 
-                            data-metric-key={metric} 
+                          <span
+                            data-bs-toggle="tooltip"
+                            data-metric-key={metric}
                             className="badge rounded-circle bg-light text-dark ms-2"
                           >
                             i
@@ -101,13 +105,28 @@ const WarrenBuffetIndicators = ({ticker}) => {
           </Card>
         </Col>
         <Col md={4}>
-          <FinancialChart 
-            data={getChartData()} 
+          <FinancialChart
+            data={getChartData()}
             years={uniqueYears}
-            metricName={activeMetric}
-          />
+            metricName={activeMetric} />
         </Col>
-      </Row>
+      </Row><Row>
+          <Col md={8}>
+            <Card className="mb-4">
+              <CardBody>
+                <div>
+                  <p> Net Earnings Ratio: A net Earnings Ratio over 20% is a strong indicator, 
+                    that theres is some kind of competivive advantage </p>
+                  <p>
+
+                    </p> 
+                </div> 
+              </CardBody>
+            </Card>
+          </Col>
+          <Col md={4}>
+          </Col>
+        </Row></>
     );
 };
 
